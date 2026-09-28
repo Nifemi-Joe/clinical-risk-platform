@@ -11,8 +11,19 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/ ./src/
+COPY data/raw/ ./data/raw/
+
+# Model artifacts (models/*.joblib, *.json) are deliberately NOT committed
+# to git (see .gitignore: models/* is ignored, only .gitkeep is tracked) -
+# they're regenerated build artifacts, not source, and committing ~2MB of
+# binary blobs that can be reproduced from the tracked raw data + this
+# script is worse than just training them here. This is also a real
+# reproducibility check: if src/registry/train_production_models.py ever
+# breaks, the image fails to build instead of silently shipping stale
+# models.
+RUN python -m src.registry.train_production_models
+
 COPY api/ ./api/
-COPY models/ ./models/
 
 # SQLite file lives in a dedicated, volume-mountable directory - see
 # docker-compose.yml's app-db volume. Swap DATABASE_URL to a Postgres URL

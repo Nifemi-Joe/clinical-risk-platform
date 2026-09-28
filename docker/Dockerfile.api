@@ -1,0 +1,29 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# System deps needed by lightgbm/xgboost at runtime
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY src/ ./src/
+COPY api/ ./api/
+COPY models/ ./models/
+
+# SQLite file lives in a dedicated, volume-mountable directory - see
+# docker-compose.yml's app-db volume. Swap DATABASE_URL to a Postgres URL
+# for a real multi-instance deployment (api/db.py reads it from env).
+RUN mkdir -p /app/data
+ENV DATABASE_URL=sqlite:////app/data/app.db
+
+EXPOSE 8000
+
+# --workers 1: model artifacts are loaded into memory once at import time
+# (see api/main.py's _load_registry()) - multiple workers would each load
+# their own copy, which is fine for a portfolio deployment but worth noting
+# before scaling this to real traffic.
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]

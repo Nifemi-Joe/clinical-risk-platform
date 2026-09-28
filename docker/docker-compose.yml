@@ -1,0 +1,43 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../models:/app/models:ro
+      - app-db:/app/data
+    environment:
+      # Override these in a real deployment - see api/auth.py and
+      # api/email.py for what each does. Left as dev defaults here so
+      # `docker compose up` works out of the box.
+      - SECRET_KEY=${SECRET_KEY:-dev-only-insecure-secret-change-me}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:8080}
+      # Uncomment and set these to enable real password-reset/message emails:
+      # - SMTP_HOST=smtp.yourprovider.com
+      # - SMTP_PORT=587
+      # - SMTP_USER=...
+      # - SMTP_PASSWORD=...
+      # - FROM_EMAIL=no-reply@yourapp.com
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.frontend
+      args:
+        # Same-host deployment: frontend calls same-origin /api, which
+        # nginx.conf proxies to the `api` service above.
+        VITE_API_URL: /api
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
+volumes:
+  app-db:

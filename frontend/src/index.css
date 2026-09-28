@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background-color: #F4F6F3;
+  }
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-serif;
+  }
+  ::selection {
+    background-color: #1F6F5C;
+    color: #F4F6F3;
+  }
+  :focus-visible {
+    outline: 2px solid #1F6F5C;
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-teal text-paper px-5 py-2.5 rounded-sm text-sm font-medium hover:bg-teal-dark transition-colors;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 border border-ink/20 text-ink px-5 py-2.5 rounded-sm text-sm font-medium hover:border-ink/40 transition-colors;
+  }
+  .field-label {
+    @apply block text-xs font-medium text-muted mb-1.5;
+  }
+  .field-input {
+    @apply w-full border border-border rounded-sm px-3 py-2 text-sm bg-white focus:border-teal focus:outline-none;
+  }
+  .card {
+    @apply border border-border bg-white rounded-sm p-6;
+  }
+  .data-label {
+    @apply font-mono text-xs text-muted;
+  }
+}

@@ -1,0 +1,40 @@
+# Core
+pandas
+numpy
+scipy
+scikit-learn
+
+# Gradient boosting
+xgboost
+lightgbm
+
+# Explainability & experiment tracking
+shap
+mlflow
+sqlalchemy
+alembic
+
+# Visualization
+matplotlib
+
+# Testing
+pytest
+
+# API (Phase 6)
+fastapi
+uvicorn[standard]
+pydantic
+joblib
+httpx  # needed by fastapi.testclient for tests/test_api.py
+
+# Auth & app database (Phase 7)
+bcrypt
+python-jose[cryptography]
+python-multipart
+
+# --- Optional, NOT required for Phases 0/1/2/4 or the API ---
+# Modern tabular models (Phase 3 only): see requirements-modern-tabular.txt.
+# Kept out of this file on purpose - torch is a hard, sometimes-unsatisfiable
+# dependency on some machines (see that file's header), and nothing else in
+# this project should be blocked by it.
+# tabpfn  # also requires Hugging Face license acceptance - see reports/technical-report.md

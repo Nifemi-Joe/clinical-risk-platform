@@ -1,0 +1,26 @@
+# Optional dependencies for src/diseases/cardio/run_modern_tabular.py ONLY.
+# Nothing else in this project needs torch - install this file only if you
+# want to run the FT-Transformer experiment.
+#
+# KNOWN ENVIRONMENT CONSTRAINTS (hit for real while building this project -
+# documented here rather than left as a mystery install failure):
+#
+# 1. Intel Macs (x86_64): PyTorch stopped publishing macOS x86_64 wheels
+#    after version 2.2.2 (April 2024) - this is permanent, not fixable by
+#    waiting or retrying. If you're on an Intel Mac, either:
+#      a) Use a separate Python 3.10-3.12 virtual environment and run
+#         `pip install torch==2.2.2` there specifically for this one
+#         experiment, or
+#      b) Run this phase in a cloud/Linux environment instead (e.g. the
+#         GitHub Actions CI runner, a Colab notebook, or the eventual Docker
+#         deployment) - Linux wheels are unaffected by this restriction.
+#
+# 2. Python 3.13+: PyTorch 2.2.2 (the last Intel-Mac-compatible version)
+#    only supports Python up to 3.12. Combined with #1, an Intel Mac on
+#    Python 3.13 cannot install any working torch via pip, full stop -
+#    you need a 3.10-3.12 environment specifically for this piece.
+#
+# 3. Apple Silicon (M1/M2/M3) and Linux/Windows: none of the above applies -
+#    `pip install -r requirements-modern-tabular.txt` should just work.
+
+torch

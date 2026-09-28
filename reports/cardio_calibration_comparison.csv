@@ -1,0 +1,4 @@
+variant,brier_score
+uncalibrated,0.10224436906285171
+platt_sigmoid,0.09474697321843562
+isotonic,0.09161058237032431

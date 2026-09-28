@@ -1,0 +1,14 @@
+[lint]
+# Sensible defaults for this project: catch real bugs (unused imports/vars,
+# undefined names) without being pedantic about line length or import
+# ordering style in a codebase with a lot of inline commentary.
+select = ["E", "F", "W"]
+ignore = [
+    "E501",  # line length - many lines here are long because of explanatory
+             # comments, which we'd rather keep readable than hard-wrap
+]
+
+[lint.per-file-ignores]
+# Test files legitimately have unused fixture-style variables and imports
+# used only for side effects (e.g. `pytest.importorskip`).
+"tests/*.py" = ["F401", "F841"]
